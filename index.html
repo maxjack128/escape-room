@@ -70,14 +70,12 @@
         }
         .back-arrow:hover { transform: scale(1.2); }
 
-        /* 一般放大圖樣式 */
         .zoom-img { 
             max-height: 55vh; 
             width: auto; max-width: 70vw; 
             display: block; object-fit: contain; 
         }
 
-        /* 卡片專屬白底座樣式 */
         .card-base {
             background-color: #FFFFFF;
             padding: clamp(10px, 2vw, 25px);
@@ -86,30 +84,26 @@
             justify-content: center;
             align-items: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            /* 固定長寬比為 3:4，您可以根據需要修改為 1:1 或 2:3 */
             aspect-ratio: 3 / 4; 
             width: auto;
-            height: 55vh; /* 跟隨電腦版高度設定 */
+            height: 55vh;
         }
-        .card-base img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-
-        /* 手機版縮放優化 */
-        @media (max-width: 600px) {
-            .zoom-img { max-height: 45vh; }
-            .card-base { height: 40vh; } /* 手機版底座縮小一點確保空間 */
-            .vertical-text { padding-left: 5px; letter-spacing: 0.1em; }
-        }
+        .card-base img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
         /* Inventory */
         #inventory { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; background: rgba(0,0,0,0.5); padding: 8px; border-radius: 10px; z-index: 20; }
         .slot {width: 7vw; height: 7vw; max-width: 60px; max-height: 60px; border: 1px dashed #666; background-size: contain; background-repeat: no-repeat; background-position: center; cursor: pointer; }
         .slot.active { border: 1px solid #fff; background-color: rgba(255,255,255,0.1); }
 
-        /* ...其餘動畫與特殊畫面樣式維持不變... */
+        /* 手機版優化：只針對小螢幕進行必要微調 */
+        @media (max-width: 600px) {
+            .zoom-img { max-height: 45vh; }
+            .card-base { height: 40vh; }
+            .slot { width: 12vw; height: 12vw; }
+            .vertical-text { padding-left: 5px; letter-spacing: 0.1em; }
+        }
+
+        /* 最終動畫與其他樣式維持不變 */
         #final-stage { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, #FFF 50%, #000 50%); z-index: 999; display: none; }
         .final-img { position: absolute; width: 15vw; transition: all 4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; }
         #final-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #888; font-size: clamp(1.2rem, 4vw, 2.5rem); letter-spacing: clamp(0.3rem, 2vw, 1rem); opacity: 0; transition: opacity 2s; z-index: 10; text-align: center; width: 90%; text-shadow: 2px 2px 4px rgba(0,0,0,0.3), -2px -2px 4px rgba(255,255,255,0.3); }
@@ -227,16 +221,11 @@
             renderSafe(content); 
         } else {
             const item = data[type];
-            // 判斷是否為卡片，若是則加上白色長方形底座
             const isCard = type.startsWith('card_');
-            
             content.innerHTML = `
                 <div class="zoom-wrapper">
                     <div style="display:flex; flex-direction:column; align-items:center;">
-                        ${isCard ? 
-                            `<div class="card-base"><img src="${item.img}"></div>` : 
-                            `<img src="${item.img}" class="zoom-img">`
-                        }
+                        ${isCard ? `<div class="card-base"><img src="${item.img}"></div>` : `<img src="${item.img}" class="zoom-img">`}
                         <div class="back-arrow" onclick="closeZoom()">▼</div>
                     </div>
                     <div class="vertical-text">${item.desc}</div>
@@ -244,7 +233,6 @@
         }
     }
 
-    // ...其餘 JavaScript 函式（renderSafe, safePress, renderDoor...）維持不變...
     function renderSafe(container) {
         if (safeStatus !== "closed") {
             const imgFile = (safeStatus === "right") ? "safe_open_right.png" : "safe_open_wrong.png";
@@ -282,7 +270,6 @@
                             <div style="position:absolute; top:75%; left:48.4%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('0')"></div>
                             <div style="position:absolute; top:75%; left:59.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('清除')"></div>
                             <div style="position:absolute; top:74%; left:70%; width:19%; height:13%; cursor:pointer;" onclick="safePress('提交')"></div>
-                            
                         </div>
                         <div class="back-arrow" onclick="closeZoom()">▼</div>
                     </div>
@@ -295,7 +282,7 @@
         if (k === '清除') { safeInput = ""; } 
         else if (k === '提交') {
             if (safeInput === "") return;
-            const isCorrect = safeInput.includes('π') && safeInput.includes('2') && safeInput.includes('R');
+            const isCorrect = (safeInput.includes('π') && safeInput.includes('2') && safeInput.includes('R')) || safeInput === "2πR";
             safeStatus = isCorrect ? "right" : "wrong";
             renderSafe(document.getElementById('zoom-content'));
         } else {
@@ -305,20 +292,21 @@
         if (display) display.innerText = safeInput;
     }
 
-    function renderDoor(container) {
+    /* 恢復你原本的感應鎖介面樣式 */
+        function renderDoor(container) {
         document.getElementById('overlay').style.backgroundColor = "#000";
         container.innerHTML = `
             <div class="zoom-wrapper" style="width: 90%; max-width: none;">
                 <div style="display: flex; flex-direction: column; align-items: center; flex-grow: 1;">
-                    <h2 style="color:#fff; font-size: clamp(16px, 2.5vw, 36px); letter-spacing: 0.5em; margin-bottom: 20px;">感應鎖</h2>
+                    <h2 style="color:#fff; font-size: clamp(18px, 2.5vw, 36px); letter-spacing: 0.5em; margin-bottom: 20px;">感應鎖</h2>
                     <div style="display: flex; justify-content: center; width: 100%; gap: 3vw;">
-                        <div style="border: 2px solid #fff; padding: 10px; width: 40%; text-align: center; border-radius: 10px;">
-                            <div style="font-size: 14px; color: #fff; margin-bottom: 10px;">請放入純白線索</div>
-                            <input type="file" id="white-input" style="color: #fff; width: 100%; font-size: 12px;" onchange="checkDoubleKey()">
+                        <div style="border: 2px solid #fff; padding: 2vw; width: 35%; text-align: center; border-radius: 15px;">
+                            <div style="font-size: clamp(18px, 1.2vw, 36px); color: #fff; margin-bottom: 1.5vw;">請放入純白線索</div>
+                            <input type="file" id="white-input" style="color: #fff; width: 100%;" onchange="checkDoubleKey()">
                         </div>
-                        <div style="border: 2px solid #444; padding: 10px; width: 40%; text-align: center; border-radius: 10px;">
-                            <div style="font-size: 14px; color: #888; margin-bottom: 10px;">請放入漆黑線索</div>
-                            <input type="file" id="black-input" style="color: #fff; width: 100%; font-size: 12px;" onchange="checkDoubleKey()">
+                        <div style="border: 2px solid #444; padding: 2vw; width: 35%; text-align: center; border-radius: 15px;">
+                            <div style="font-size: clamp(18px, 1.2vw, 36px); color: #888; margin-bottom: 1.5vw;">請放入漆黑線索</div>
+                            <input type="file" id="black-input" style="color: #fff; width: 100%;" onchange="checkDoubleKey()">
                         </div>
                     </div>
                     <div class="back-arrow" onclick="resetOverlayColor(); closeZoom();">▼</div>
@@ -501,5 +489,6 @@
 </script>
 </body>
 </html>
+
 
 
