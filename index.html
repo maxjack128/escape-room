@@ -44,21 +44,43 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             background: #D3D3D3; display: none; flex-direction: column; 
             align-items: center; justify-content: center; z-index: 100; 
-            padding: 20px; box-sizing: border-box;
+            padding: 10px; box-sizing: border-box;
         }
 
-        .zoom-wrapper { display: flex; align-items: center; justify-content: center; gap: clamp(10px, 4vw, 40px); max-width: 95%; max-height: 95%; margin-top: 5vh; }
+        .zoom-wrapper { 
+            display: flex; align-items: center; justify-content: center; 
+            gap: clamp(10px, 2vw, 40px); 
+            max-width: 95%; max-height: 90%; 
+            margin-top: 2vh;
+        }
+        
         .vertical-text {
             writing-mode: vertical-rl; text-orientation: mixed;
-            font-size: clamp(14px, 1.5vw, 24px); letter-spacing: 0.3em;
+            font-size: clamp(12px, 1.5vw, 24px); letter-spacing: 0.2em;
             color: #333; border-left: 2px solid #888;
-            padding-left: 1.5vw; align-self: center;
-            text-align: start; line-height: 1.6; font-weight: 500;
+            padding-left: 1vw; align-self: center;
+            text-align: start; line-height: 1.5; font-weight: 500;
+            white-space: nowrap;
         }
 
-        .back-arrow { color: #8B7500; font-size: clamp(30px, 2vw, 50px); cursor: pointer; margin-top: 1vw; transition: transform 0.2s; display: inline-block; }
+        .back-arrow { 
+            color: #8B7500; font-size: clamp(30px, 5vw, 50px); 
+            cursor: pointer; margin-top: 5px; 
+            transition: transform 0.2s; display: inline-block; 
+        }
         .back-arrow:hover { transform: scale(1.2); }
-        .zoom-img { max-height: clamp(50vh, 55vh, 70vh); width: auto; max-width: 90vw; display: block; object-fit: contain; }
+
+        .zoom-img { 
+            max-height: 55vh; /* 電腦版高度 */
+            width: auto; max-width: 70vw; 
+            display: block; object-fit: contain; 
+        }
+
+        /* 手機版縮放優化 */
+        @media (max-width: 600px) {
+            .zoom-img { max-height: 45vh; } /* 縮小圖片以留出空間給箭頭 */
+            .vertical-text { padding-left: 5px; letter-spacing: 0.1em; }
+        }
 
         /* Inventory */
         #inventory { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; background: rgba(0,0,0,0.5); padding: 8px; border-radius: 10px; z-index: 20; }
@@ -239,8 +261,8 @@
             const item = data[type];
             content.innerHTML = `
                 <div class="zoom-wrapper">
-                    <div style="display:flex; flex-direction:column; align-items:center; width: clamp(280px, 60vw, 800px);">
-                        <img src="${item.img}" class="zoom-img" style="width: 100%; height: auto;">
+                    <div style="display:flex; flex-direction:column; align-items:center;">
+                        <img src="${item.img}" class="zoom-img">
                         <div class="back-arrow" onclick="closeZoom()">▼</div>
                     </div>
                     <div class="vertical-text">${item.desc}</div>
@@ -254,39 +276,39 @@
             const evalType = (safeStatus === "right") ? "eval_dark" : "eval_light";
             container.innerHTML = `
                 <div class="zoom-wrapper">
-                    <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-                        <div style="position: relative; width: clamp(280px, 50vw, 800px); display: inline-block;">
-                            <img src="${imgFile}" style="width: 100%; height: auto; display: block; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <div style="position: relative; width: clamp(280px, 60vw, 800px); aspect-ratio: 16/9;">
+                            <img src="${imgFile}" style="width: 100%; height: 100%; object-fit: contain; display: block; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
                             <div style="position: absolute; top: 73%; left: 55%; width: 23%; height: 18%; cursor: pointer; z-index: 10; clip-path: polygon(15% 0%, 60% 0%, 80% 90%, 20% 100%);" onclick="pickupEval('${evalType}')"></div>
                         </div>
-                        <div class="back-arrow" style="font-size: clamp(30px, 4vw, 50px); padding: 10px;" onclick="closeZoom()">▼</div>
+                        <div class="back-arrow" onclick="closeZoom()">▼</div>
                     </div>
                     <div class="vertical-text">金庫被打開了<br>這是...我答對了嗎？</div>
                 </div>`;
         } else {
             container.innerHTML = `
                 <div class="zoom-wrapper">
-                    <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-                        <div style="position: relative; display: inline-flex; width: clamp(300px, 60vw, 750px); max-height: 75vh; aspect-ratio: 16 / 9; justify-content: center; align-items: center;">
-                            <div id="safe-display" style="position: absolute; top: 9.5%; left: 48.5%; width: 40%; height: 16%; font-family: monospace; font-size: clamp(16px, 2.5vw, 32px); color: #0f0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; border-radius: 5px; z-index: 20; pointer-events: none;">${safeInput}</div>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <div style="position: relative; width: clamp(280px, 60vw, 800px); aspect-ratio: 16/9; background: #000;">
+                            <div id="safe-display" style="position: absolute; top: 9.5%; left: 48.5%; width: 40%; height: 16%; font-family: monospace; font-size: clamp(14px, 2vw, 32px); color: #0f0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; border-radius: 5px; z-index: 20; pointer-events: none;">${safeInput}</div>
                             <img src="safe_zoom.png" style="width: 100%; height: 100%; object-fit: contain; display: block;">
-                            <div style="position:absolute; top:29.5%; left:48.4%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('1')"></div>
-                            <div style="position:absolute; top:29.5%; left:59.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('2')"></div>
-                            <div style="position:absolute; top:29.5%; left:70.6%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('3')"></div>
-                            <div style="position:absolute; top:29.5%; left:81.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('π')"></div>
-                            <div style="position:absolute; top:44.5%; left:48.4%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('4')"></div>
-                            <div style="position:absolute; top:44.5%; left:59.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('5')"></div>
-                            <div style="position:absolute; top:44.5%; left:70.6%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('6')"></div>
-                            <div style="position:absolute; top:44.5%; left:81.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('R')"></div>
-                            <div style="position:absolute; top:60%; left:48.4%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('7')"></div>
-                            <div style="position:absolute; top:60%; left:59.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('8')"></div>
-                            <div style="position:absolute; top:60%; left:70.6%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('9')"></div>
-                            <div style="position:absolute; top:60%; left:81.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('^')"></div>
-                            <div style="position:absolute; top:75%; left:48.4%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('0')"></div>
-                            <div style="position:absolute; top:75%; left:59.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('清除')"></div>
+                            <div style="position:absolute; top:29.5%; left:48.4%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('1')"></div>
+                            <div style="position:absolute; top:29.5%; left:59.5%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('2')"></div>
+                            <div style="position:absolute; top:29.5%; left:70.6%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('3')"></div>
+                            <div style="position:absolute; top:29.5%; left:81.5%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('π')"></div>
+                            <div style="position:absolute; top:44.5%; left:48.4%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('4')"></div>
+                            <div style="position:absolute; top:44.5%; left:59.5%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('5')"></div>
+                            <div style="position:absolute; top:44.5%; left:70.6%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('6')"></div>
+                            <div style="position:absolute; top:44.5%; left:81.5%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('R')"></div>
+                            <div style="position:absolute; top:60%; left:48.4%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('7')"></div>
+                            <div style="position:absolute; top:60%; left:59.5%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('8')"></div>
+                            <div style="position:absolute; top:60%; left:70.6%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('9')"></div>
+                            <div style="position:absolute; top:60%; left:81.5%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('^')"></div>
+                            <div style="position:absolute; top:75%; left:48.4%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('0')"></div>
+                            <div style="position:absolute; top:75%; left:59.5%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('清除')"></div>
                             <div style="position:absolute; top:74%; left:70%; width:19%; height:13%; cursor:pointer;" onclick="safePress('提交')"></div>
                         </div>
-                        <div class="back-arrow" style="font-size: clamp(30px, 4vw, 50px); padding: 10px;" onclick="closeZoom()">▼</div>
+                        <div class="back-arrow" onclick="closeZoom()">▼</div>
                     </div>
                     <div class="vertical-text">上面寫只能輸入一次...<br>看來得好好思考了</div>
                 </div>`;
@@ -312,15 +334,15 @@
         container.innerHTML = `
             <div class="zoom-wrapper" style="width: 90%; max-width: none;">
                 <div style="display: flex; flex-direction: column; align-items: center; flex-grow: 1;">
-                    <h2 style="color:#fff; font-size: clamp(18px, 2.5vw, 36px); letter-spacing: 0.5em; margin-bottom: 20px;">感應鎖</h2>
+                    <h2 style="color:#fff; font-size: clamp(16px, 2.5vw, 36px); letter-spacing: 0.5em; margin-bottom: 20px;">感應鎖</h2>
                     <div style="display: flex; justify-content: center; width: 100%; gap: 3vw;">
-                        <div style="border: 2px solid #fff; padding: 2vw; width: 35%; text-align: center; border-radius: 15px;">
-                            <div style="font-size: clamp(18px, 1.2vw, 36px); color: #fff; margin-bottom: 1.5vw;">請放入純白線索</div>
-                            <input type="file" id="white-input" style="color: #fff; width: 100%;" onchange="checkDoubleKey()">
+                        <div style="border: 2px solid #fff; padding: 10px; width: 40%; text-align: center; border-radius: 10px;">
+                            <div style="font-size: 14px; color: #fff; margin-bottom: 10px;">請放入純白線索</div>
+                            <input type="file" id="white-input" style="color: #fff; width: 100%; font-size: 12px;" onchange="checkDoubleKey()">
                         </div>
-                        <div style="border: 2px solid #444; padding: 2vw; width: 35%; text-align: center; border-radius: 15px;">
-                            <div style="font-size: clamp(18px, 1.2vw, 36px); color: #888; margin-bottom: 1.5vw;">請放入漆黑線索</div>
-                            <input type="file" id="black-input" style="color: #fff; width: 100%;" onchange="checkDoubleKey()">
+                        <div style="border: 2px solid #444; padding: 10px; width: 40%; text-align: center; border-radius: 10px;">
+                            <div style="font-size: 14px; color: #888; margin-bottom: 10px;">請放入漆黑線索</div>
+                            <input type="file" id="black-input" style="color: #fff; width: 100%; font-size: 12px;" onchange="checkDoubleKey()">
                         </div>
                     </div>
                     <div class="back-arrow" onclick="resetOverlayColor(); closeZoom();">▼</div>
@@ -453,7 +475,7 @@
                 setTimeout(() => {
                     quoteContainer.style.opacity = 0;
                     setTimeout(showIllusionEnding, 2000);
-                }, 5000); // 這裡改為停留 5 秒
+                }, 5000);
             }, 1000);
 
         } else {
@@ -483,7 +505,6 @@
         }, 100);
     }
 
-    // 顯示最後指令的函數
     function showFinalTask() {
         const taskScreen = document.getElementById('task-screen');
         taskScreen.style.display = 'flex';
@@ -492,7 +513,7 @@
         ids.forEach((id, index) => {
             setTimeout(() => {
                 document.getElementById(id).style.opacity = 1;
-            }, index * 1500); // 每隔 1.5 秒依序出現
+            }, index * 1500);
         });
     }
 
