@@ -267,21 +267,22 @@
                         <div style="position: relative; width: clamp(280px, 60vw, 800px); aspect-ratio: 16/9; background: #000;">
                             <div id="safe-display" style="position: absolute; top: 9.5%; left: 48.5%; width: 40%; height: 16%; font-family: monospace; font-size: clamp(14px, 2vw, 32px); color: #0f0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; border-radius: 5px; z-index: 20; pointer-events: none;">${safeInput}</div>
                             <img src="safe_zoom.png" style="width: 100%; height: 100%; object-fit: contain; display: block;">
-                            <div style="position:absolute; top:29.5%; left:48.4%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('1')"></div>
-                            <div style="position:absolute; top:29.5%; left:59.5%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('2')"></div>
-                            <div style="position:absolute; top:29.5%; left:70.6%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('3')"></div>
-                            <div style="position:absolute; top:29.5%; left:81.5%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('π')"></div>
-                            <div style="position:absolute; top:44.5%; left:48.4%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('4')"></div>
-                            <div style="position:absolute; top:44.5%; left:59.5%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('5')"></div>
-                            <div style="position:absolute; top:44.5%; left:70.6%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('6')"></div>
-                            <div style="position:absolute; top:44.5%; left:81.5%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('R')"></div>
-                            <div style="position:absolute; top:60%; left:48.4%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('7')"></div>
-                            <div style="position:absolute; top:60%; left:59.5%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('8')"></div>
-                            <div style="position:absolute; top:60%; left:70.6%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('9')"></div>
-                            <div style="position:absolute; top:60%; left:81.5%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('^')"></div>
-                            <div style="position:absolute; top:75%; left:48.4%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('0')"></div>
-                            <div style="position:absolute; top:75%; left:59.5%; width:7.5%; height:13%; cursor:pointer;" onclick="safePress('清除')"></div>
+                            <div style="position:absolute; top:29.5%; left:48.4%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('1')"></div>
+                            <div style="position:absolute; top:29.5%; left:59.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('2')"></div>
+                            <div style="position:absolute; top:29.5%; left:70.6%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('3')"></div>
+                            <div style="position:absolute; top:29.5%; left:81.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('π')"></div>
+                            <div style="position:absolute; top:44.5%; left:48.4%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('4')"></div>
+                            <div style="position:absolute; top:44.5%; left:59.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('5')"></div>
+                            <div style="position:absolute; top:44.5%; left:70.6%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('6')"></div>
+                            <div style="position:absolute; top:44.5%; left:81.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('R')"></div>
+                            <div style="position:absolute; top:60%; left:48.4%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('7')"></div>
+                            <div style="position:absolute; top:60%; left:59.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('8')"></div>
+                            <div style="position:absolute; top:60%; left:70.6%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('9')"></div>
+                            <div style="position:absolute; top:60%; left:81.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('^')"></div>
+                            <div style="position:absolute; top:75%; left:48.4%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('0')"></div>
+                            <div style="position:absolute; top:75%; left:59.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('清除')"></div>
                             <div style="position:absolute; top:74%; left:70%; width:19%; height:13%; cursor:pointer;" onclick="safePress('提交')"></div>
+                            
                         </div>
                         <div class="back-arrow" onclick="closeZoom()">▼</div>
                     </div>
@@ -500,4 +501,5 @@
 </script>
 </body>
 </html>
+
 
