@@ -10,6 +10,7 @@
             margin: 0; padding: 0; height: 100%; width: 100%;
             background: #222; display: flex; align-items: center; justify-content: center; overflow: hidden;
             font-family: "Noto Sans TC", sans-serif;
+            touch-action: manipulation;
         }
 
         #game-container {
@@ -95,12 +96,19 @@
         .slot {width: 7vw; height: 7vw; max-width: 60px; max-height: 60px; border: 1px dashed #666; background-size: contain; background-repeat: no-repeat; background-position: center; cursor: pointer; }
         .slot.active { border: 1px solid #fff; background-color: rgba(255,255,255,0.1); }
 
-        /* 手機版優化：只針對小螢幕進行必要微調 */
+        /* 手機版排版修正 */
         @media (max-width: 600px) {
-            .zoom-img { max-height: 45vh; }
-            .card-base { height: 40vh; }
+            .zoom-wrapper { flex-direction: column; gap: 10px; max-height: 85vh; }
+            .zoom-img { max-height: 40vh; max-width: 90vw; }
+            /* 強制金庫容器維持 16:9 以防止熱區偏移 */
+            .safe-container { width: 90vw !important; aspect-ratio: 16 / 9 !important; height: auto !important; }
+            .vertical-text { 
+                writing-mode: horizontal-tb; border-left: none; border-top: 2px solid #888; 
+                padding: 10px 0 0 0; white-space: normal; text-align: center; font-size: 14px;
+            }
             .slot { width: 12vw; height: 12vw; }
-            .vertical-text { padding-left: 5px; letter-spacing: 0.1em; }
+            #inventory { bottom: 5px; padding: 5px; }
+            .back-arrow { font-size: 35px; }
         }
 
         /* 最終動畫與其他樣式維持不變 */
@@ -154,7 +162,7 @@
     </div>
 
     <div id="overlay">
-        <div id="zoom-content"></div>
+        <div id="zoom-content" style="width: 100%; display: flex; justify-content: center;"></div>
     </div>
 </div>
 
@@ -240,7 +248,7 @@
             container.innerHTML = `
                 <div class="zoom-wrapper">
                     <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div style="position: relative; width: clamp(280px, 60vw, 800px); aspect-ratio: 16/9;">
+                        <div class="safe-container" style="position: relative; width: clamp(280px, 60vw, 800px); aspect-ratio: 16/9;">
                             <img src="${imgFile}" style="width: 100%; height: 100%; object-fit: contain; display: block; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
                             <div style="position: absolute; top: 73%; left: 55%; width: 23%; height: 18%; cursor: pointer; z-index: 10; clip-path: polygon(15% 0%, 60% 0%, 80% 90%, 20% 100%);" onclick="pickupEval('${evalType}')"></div>
                         </div>
@@ -252,7 +260,7 @@
             container.innerHTML = `
                 <div class="zoom-wrapper">
                     <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div style="position: relative; width: clamp(280px, 60vw, 800px); aspect-ratio: 16/9; background: #000;">
+                        <div class="safe-container" style="position: relative; width: clamp(280px, 60vw, 800px); aspect-ratio: 16/9; background: #000;">
                             <div id="safe-display" style="position: absolute; top: 9.5%; left: 48.5%; width: 40%; height: 16%; font-family: monospace; font-size: clamp(14px, 2vw, 32px); color: #0f0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; border-radius: 5px; z-index: 20; pointer-events: none;">${safeInput}</div>
                             <img src="safe_zoom.png" style="width: 100%; height: 100%; object-fit: contain; display: block;">
                             <div style="position:absolute; top:29.5%; left:48.4%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('1')"></div>
@@ -284,17 +292,8 @@
         } 
         else if (k === '提交') {
             if (safeInput === "") return;
-
-            // 判讀邏輯：
-            // 1. 必須包含連續的 "R^2"
-            // 2. 必須包含 "π"
-            // 3. 必須包含 "2" (且這個 2 不能是 R^2 裡面的那個 2，所以要檢查字串中是否有兩個 2，或者一個 2 在 R^ 之外)
-            
             const hasRSquared = safeInput.includes("R^2");
             const hasPi = safeInput.includes("π");
-            
-            // 檢查是否有額外的 "2" (排除掉 R^2 裡面的那個)
-            // 做法：將第一個遇到的 "R^2" 替換掉，看剩下的字串是否有 "2"
             const remainingAfterR2 = safeInput.replace("R^2", "");
             const hasExtraTwo = remainingAfterR2.includes("2");
 
@@ -311,8 +310,7 @@
         if (display) display.innerText = safeInput;
     }
 
-    /* 恢復你原本的感應鎖介面樣式 */
-        function renderDoor(container) {
+    function renderDoor(container) {
         document.getElementById('overlay').style.backgroundColor = "#000";
         container.innerHTML = `
             <div class="zoom-wrapper" style="width: 90%; max-width: none;">
@@ -508,6 +506,7 @@
 </script>
 </body>
 </html>
+
 
 
 
