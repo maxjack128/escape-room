@@ -279,11 +279,30 @@
     }
 
     function safePress(k) {
-        if (k === '清除') { safeInput = ""; } 
+        if (k === '清除') {
+            safeInput = "";
+        } 
         else if (k === '提交') {
             if (safeInput === "") return;
-            const isCorrect = (safeInput.includes('π') && safeInput.includes('2') && safeInput.includes('R')) || safeInput === "2πR";
-            safeStatus = isCorrect ? "right" : "wrong";
+
+            // 判讀邏輯：
+            // 1. 必須包含連續的 "R^2"
+            // 2. 必須包含 "π"
+            // 3. 必須包含 "2" (且這個 2 不能是 R^2 裡面的那個 2，所以要檢查字串中是否有兩個 2，或者一個 2 在 R^ 之外)
+            
+            const hasRSquared = safeInput.includes("R^2");
+            const hasPi = safeInput.includes("π");
+            
+            // 檢查是否有額外的 "2" (排除掉 R^2 裡面的那個)
+            // 做法：將第一個遇到的 "R^2" 替換掉，看剩下的字串是否有 "2"
+            const remainingAfterR2 = safeInput.replace("R^2", "");
+            const hasExtraTwo = remainingAfterR2.includes("2");
+
+            if (hasRSquared && hasPi && hasExtraTwo) {
+                safeStatus = "right";
+            } else {
+                safeStatus = "wrong";
+            }
             renderSafe(document.getElementById('zoom-content'));
         } else {
             if (safeInput.length < 10) safeInput += k;
@@ -489,6 +508,7 @@
 </script>
 </body>
 </html>
+
 
 
 
