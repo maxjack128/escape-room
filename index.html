@@ -310,6 +310,7 @@
         } else {
             if (safeInput.length < 10) safeInput += k;
         }
+        document.getElementById('safe-display').innerText = safeInput || '----';
         const display = document.getElementById('safe-display');
         if (display) display.innerText = safeInput;
     }
@@ -510,6 +511,7 @@
 </script>
 </body>
 </html>
+
 
 
 
