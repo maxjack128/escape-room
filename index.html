@@ -177,7 +177,7 @@
     <div id="blackout-screen">
         <div id="ending-quotes"></div>
         <div id="second-puzzle-container">
-            <div id="puzzle-title">「黑」與「白」之間究竟藏了什麼？</div>
+            <div id="puzzle-title">「黑」與「白」之間還有什麼顏色？</div>
             <div id="puzzle-input-wrapper">
                 <input type="text" id="puzzle-input" placeholder="在此輸入答案..." onkeydown="if(event.key==='Enter') checkSecondPuzzle()">
                 <div id="puzzle-error">❌請重新思考再回答</div>
@@ -207,19 +207,19 @@
     let collectedItems = [];
 
     const data = {
-        map: { img: 'map_zoom.png', desc: '一幅世界地圖，<br>但形狀怎麼怪怪的...' },
+        map: { img: 'map_zoom.png', desc: '一幅世界地圖，<br>但<b><b>形狀怎麼怪怪的...</b></b>' },
         dumbbells: { img: 'dumbbells_zoom.png', desc: '兩個7kg啞鈴，<br>問問丁丁可以練哪吧' },
         poster: { img: 'poster_zoom.png', desc: 'Red Velvet Seulgi的海報，<br>丁丁很喜歡' },
-        clock: { img: 'clock_zoom.png', desc: '停止的圓形時鐘，<br>上面寫了英文字母R' },
+        clock: { img: 'clock_zoom.png', desc: '停止的圓形時鐘，<br>上面寫了英文字母<b><b>R</b></b>' },
         floor: { img: 'floor_zoom.png', desc: '吊燈投影出的光芒<br>隱約像是一個鬼臉...' },
-        desk: { img: 'desk_zoom.png', desc: '老舊的木桌，桌上放了盤黑白棋<br>還是應該叫「黑灰棋」呢哈哈<br>下一步灰棋會減去黑棋<br><br>在角落處某人用立可白寫了段話' },
+        desk: { img: 'desk_zoom.png', desc: '老舊的木桌，桌上放了盤黑白棋<br>還是應該叫「黑灰棋」呢哈哈<br>下一步<b><b>灰棋會減去黑棋</b></b><br><br>在角落處某人用立可白寫了段話' },
         lamp: { img: 'pendant_lamp_zoom.png', desc: '老舊的吊燈<br>光線勉強能看清楚這個房間' },
         eval_dark: { img: 'eval_dark.png', desc: '【漆黑線索】<br>從這手勢看來我應該是答對了' },
         eval_light: { img: 'eval_light.png', desc: '【純白線索】<br>從這手勢看來我應該是答錯了' },
-        card_01: { img: 'card_01.png', desc: '【卡片：一】<br>卡片上有3個圓相切' },
-        card_02: { img: 'card_02.png', desc: '【卡片：二】<br>卡片上有4個圓相切' },
-        card_03: { img: 'card_03.png', desc: '【卡片：三】<br>卡片上有6個圓相切' },
-        card_04: { img: 'card_04.png', desc: '【卡片：四】<br>卡片上有13個圓相切' }
+        card_01: { img: 'card_01.png', desc: '【卡片：一】<br>卡片上有形狀對稱的圖形' },
+        card_02: { img: 'card_02.png', desc: '【卡片：二】<br>卡片上有形狀對稱的圖形' },
+        card_03: { img: 'card_03.png', desc: '【卡片：三】<br>卡片上有形狀對稱的圖形' },
+        card_04: { img: 'card_04.png', desc: '【卡片：四】<br>卡片上有形狀怪怪的圖形' }
     };
 
     function showZoom(type) {
@@ -265,7 +265,7 @@
                 <div class="zoom-wrapper">
                     <div style="display: flex; flex-direction: column; align-items: center;">
                         <div class="safe-container" style="position: relative; width: clamp(280px, 60vw, 800px); aspect-ratio: 16/9; background: #000;">
-                            <div id="safe-display" style="position: absolute; top: 9.5%; left: 48.5%; width: 40%; height: 16%; font-family: monospace; font-size: clamp(14px, 2vw, 32px); color: #0f0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; border-radius: 5px; z-index: 20; pointer-events: none;">${safeInput}</div>
+                            <div id="safe-display" style="position: absolute; top: 9.5%; left: 48.5%; width: 40%; height: 16%; font-family: monospace; font-size: clamp(14px, 2vw, 32px); color: #0f0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; border-radius: 5px; z-index: 20; pointer-events: none;">${safeInput || '----'}</div>
                             <img src="safe_zoom.png" style="width: 100%; height: 100%; object-fit: contain; display: block;">
                             <div style="position:absolute; top:29.5%; left:48.4%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('1')"></div>
                             <div style="position:absolute; top:29.5%; left:59.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('2')"></div>
@@ -310,9 +310,8 @@
         } else {
             if (safeInput.length < 10) safeInput += k;
         }
-        document.getElementById('safe-display').innerText = safeInput || '----';
         const display = document.getElementById('safe-display');
-        if (display) display.innerText = safeInput;
+        if (display) display.innerText = safeInput || '----';
     }
 
     function renderDoor(container) {
@@ -511,6 +510,7 @@
 </script>
 </body>
 </html>
+
 
 
 
