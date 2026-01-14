@@ -130,6 +130,7 @@
         #task-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 5000; display: none; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; padding: 20px; box-sizing: border-box; }
         .task-line { font-size: clamp(1rem, 2.5vw, 1.8rem); margin: 15px 0; opacity: 0; transition: opacity 1.5s; line-height: 1.6; }
         .task-title { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 900; margin-top: 30px; letter-spacing: 0.3em; }
+        .task-finish { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 900; margin-top: 30px; letter-spacing: 0.3em; }
         @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-20px); } }
     </style>
 </head>
@@ -193,6 +194,7 @@
     <div id="task-2" class="task-line">2. 找到第一題的答案後，請自製類似效果的圖片</div>
     <div id="task-3" class="task-line">3. 將這兩題的答案寄到丁丁的信箱：<br>maxjack128@mail3.hwsh.tc.edu.tw</div>
     <div id="task-title" class="task-line task-title">黑白之間</div>
+    <div id="task-finish" class="task-line task-finish">【完】</div>
 </div>
 
 <script>
@@ -470,7 +472,7 @@
     function showFinalTask() {
         const taskScreen = document.getElementById('task-screen');
         taskScreen.style.display = 'flex';
-        const ids = ['task-1', 'task-2', 'task-3', 'task-title'];
+        const ids = ['task-1', 'task-2', 'task-3', 'task-title' , 'task-finish'];
         ids.forEach((id, index) => {
             setTimeout(() => { document.getElementById(id).style.opacity = 1; }, index * 1500);
         });
@@ -506,6 +508,7 @@
 </script>
 </body>
 </html>
+
 
 
 
