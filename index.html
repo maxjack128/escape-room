@@ -102,7 +102,6 @@
         @media (max-width: 600px) {
             .zoom-wrapper { flex-direction: column; gap: 10px; max-height: 85vh; }
             .zoom-img { max-height: 40vh; max-width: 90vw; }
-            /* 強制金庫容器維持 16:9 以防止熱區偏移 */
             .safe-container { width: 90vw !important; aspect-ratio: 16 / 9 !important; height: auto !important; }
             .vertical-text { 
                 writing-mode: horizontal-tb; border-left: none; border-top: 2px solid #888; 
@@ -113,7 +112,6 @@
             .back-arrow { font-size: 35px; }
         }
 
-        /* 最終動畫與其他樣式維持不變 */
         #final-stage { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, #FFF 50%, #000 50%); z-index: 999; display: none; }
         .final-img { position: absolute; width: 15vw; transition: all 4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; }
         #final-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #888; font-size: clamp(1.2rem, 4vw, 2.5rem); letter-spacing: clamp(0.3rem, 2vw, 1rem); opacity: 0; transition: opacity 2s; z-index: 10; text-align: center; width: 90%; text-shadow: 2px 2px 4px rgba(0,0,0,0.3), -2px -2px 4px rgba(255,255,255,0.3); }
@@ -278,7 +276,7 @@
                             <div style="position:absolute; top:60%; left:48.4%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('7')"></div>
                             <div style="position:absolute; top:60%; left:59.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('8')"></div>
                             <div style="position:absolute; top:60%; left:70.6%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('9')"></div>
-                            <div style="position:absolute; top:60%; left:81.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('^')"></div>
+                            <div style="position:absolute; top:60%; left:81.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('²')"></div>
                             <div style="position:absolute; top:75%; left:48.4%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('0')"></div>
                             <div style="position:absolute; top:75%; left:59.5%; width:7.5%; aspect-ratio: 1/1; border-radius: 50%; cursor:pointer;" onclick="safePress('清除')"></div>
                             <div style="position:absolute; top:74%; left:70%; width:19%; height:13%; cursor:pointer;" onclick="safePress('提交')"></div>
@@ -296,9 +294,13 @@
         } 
         else if (k === '提交') {
             if (safeInput === "") return;
-            const hasRSquared = safeInput.includes("R^2");
+            
+            // 修改後的判斷邏輯
+            const hasRSquared = safeInput.includes("R²"); // R與²必須連在一起
             const hasPi = safeInput.includes("π");
-            const remainingAfterR2 = safeInput.replace("R^2", "");
+            
+            // 從輸入中移除第一個找到的 R²，再檢查剩下的部分有沒有 2
+            const remainingAfterR2 = safeInput.replace("R²", "");
             const hasExtraTwo = remainingAfterR2.includes("2");
 
             if (hasRSquared && hasPi && hasExtraTwo) {
@@ -510,6 +512,7 @@
 </script>
 </body>
 </html>
+
 
 
 
